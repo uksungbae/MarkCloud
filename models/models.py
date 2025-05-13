@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import Optional, List
-from .objectID import PyObjectId  
+from .utils import PyObjectId  
 
 class Trademark(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)

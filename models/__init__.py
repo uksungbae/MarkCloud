@@ -1,2 +1,2 @@
-from .objectID import PyObjectId
+from .utils import PyObjectId
 from .models import Trademark
