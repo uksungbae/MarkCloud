@@ -22,3 +22,16 @@ class Trademark(BaseModel):
     asignProductMainCodeList: Optional[List[str]] = None
     asignProductSubCodeList: Optional[List[str]] = None
     viennaCodeList: Optional[List[str]] = None
+
+
+class TrademarkSearchParams(BaseModel):
+    """상표 검색 필터링 파라미터"""
+    productName: Optional[str] = None
+    productNameEng: Optional[str] = None
+    applicationNumber: Optional[str] = None
+    applicationDateFrom: Optional[str] = None
+    applicationDateTo: Optional[str] = None
+    registerStatus: Optional[str] = None
+    mainCode: Optional[str] = None
+    subCode: Optional[str] = None
+    viennaCode: Optional[str] = None

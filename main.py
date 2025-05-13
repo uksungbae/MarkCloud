@@ -1,8 +1,11 @@
 from fastapi import FastAPI
 from db.base import db
 from models import Trademark
+from api.main import api_router
 
 app = FastAPI()
+
+app.include_router(api_router)
 
 @app.get("/")
 def read_root():
