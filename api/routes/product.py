@@ -4,7 +4,8 @@ from crud import get_product as crud_get_product
 from crud import get_trademarks
 from fastapi import Depends
 from typing import List
-
+from typing import Dict
+from db.base import db
 
 router = APIRouter(prefix="/products", tags=["products"])
 
@@ -35,3 +36,17 @@ async def search_trademarks(
     """
     results = await get_trademarks(filters=search_params.model_dump())
     return results
+
+@router.get("/status/counts", response_model=Dict[str, int])
+async def get_status_counts():
+    """
+    상표 등록 상태별 개수 조회
+    """
+    statuses = ["등록", "실효", "거절", "출원"]
+    result = {}
+    
+    for status in statuses:
+        count = await db.trademark_sample.count_documents({"registerStatus": status})
+        result[status] = count
+    
+    return result
