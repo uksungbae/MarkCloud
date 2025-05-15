@@ -21,7 +21,11 @@ async def get_product_by_id(
     product_id: str = Path(..., description="조회할 상표 ID")
 ):
     """
-    상표 ID로 단일 상표 데이터 조회
+    상표 ID(objectID)로 단일 상표 데이터 조회
+    
+    :상표 상세 페이지를 위한 API
+
+    parameter: 조회할 상표 ID(mongoDB objectID)
     """
     product = await crud_get_product(product_id)
     if not product:
@@ -30,13 +34,16 @@ async def get_product_by_id(
 
 
 
-@router.get("/", response_model=List[Trademark])
+@router.get("/filter", response_model=List[Trademark])
 async def search_trademarks(
     search_params: TrademarkSearchParams = Depends()
 ):
     """
     상표 데이터 검색 API (필터링)
 
+    :상표 필터링을 위한 API
+    
+    parameter: 필드 전체 
     """
     results = await get_trademarks(filters=search_params.model_dump())
     return results
@@ -44,7 +51,9 @@ async def search_trademarks(
 @router.get("/status/counts", response_model=Dict[str, int])
 async def get_status_counts():
     """
-    상표 등록 상태별 개수 조회
+    상표 등록 상태별 개수 조회 API
+    
+    no parameter
     """
     statuses = [status.value for status in RegisterStatus]
     result = {}
@@ -61,10 +70,29 @@ async def find_similar_trademarks(
     search_params: AdvancedSearchParams
 ):
     """
-    유사 키워드 기반 상표 검색 API
-    - fuzzySearch: 퍼지 검색 활성화 여부 (오타 허용)
-    - synonym: 동의어 검색 활성화 여부
-    - minScore: 최소 유사도 점수 (0.0-1.0)
+    유사 키워드 검색 API
+
+    :Atlas Search를 적용한 상표 검색 API
+
+
+    특징:
+
+    -퍼지 검색: 오타를 허용하되 단어의 첫글자는 일치해야 함(prefixLength=1)
+
+    -관련성 점수: 검색 결과는 관련성 점수에 따라 정렬됨
+
+    -최소 점수 필터링: 낮은 관련성의 결과는 제외됨
+    
+    parameter:
+
+    -searchTerm: 검색할 키워드
+
+    -fields: 검색할 필드 목록(productName, productNameEng)
+
+    -fuzzySearch: 퍼지 검색 활성화 여부(True)
+
+    -minScore: 최소 관련성 점수(0.5)
+    
     """
     # 검색 요청 로깅
     logger.info(f"Searching for: {search_params.searchTerm}, fuzzy: {search_params.fuzzySearch}, min score: {search_params.minScore}")
