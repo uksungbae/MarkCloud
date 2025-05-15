@@ -1,4 +1,4 @@
-from models.models import Trademark, TrademarkSearchParams
+from models.models import Trademark, TrademarkSearchParams, RegisterStatus
 from fastapi import APIRouter, Path, HTTPException
 from crud import get_product as crud_get_product
 from crud import get_trademarks
@@ -42,7 +42,7 @@ async def get_status_counts():
     """
     상표 등록 상태별 개수 조회
     """
-    statuses = ["등록", "실효", "거절", "출원"]
+    statuses = [status.value for status in RegisterStatus]
     result = {}
     
     for status in statuses:

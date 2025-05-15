@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import Optional, List
-from .utils import PyObjectId  
+from enum import Enum
+from .utils import PyObjectId
 
 class Trademark(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
@@ -24,6 +25,13 @@ class Trademark(BaseModel):
     viennaCodeList: Optional[List[str]] = None
 
 
+class RegisterStatus(str, Enum):
+    """상표 등록 상태 열거형"""
+    REGISTERED = "등록"
+    EXPIRED = "실효"
+    REJECTED = "거절"
+    APPLIED = "출원"
+
 class TrademarkSearchParams(BaseModel):
     """상표 검색 필터링 파라미터"""
     productName: Optional[str] = None
@@ -31,7 +39,7 @@ class TrademarkSearchParams(BaseModel):
     applicationNumber: Optional[str] = None
     applicationDateFrom: Optional[str] = None
     applicationDateTo: Optional[str] = None
-    registerStatus: Optional[str] = None
+    registerStatus: Optional[RegisterStatus] = None
     mainCode: Optional[str] = None
     subCode: Optional[str] = None
     viennaCode: Optional[str] = None
