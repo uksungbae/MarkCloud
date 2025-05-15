@@ -2,6 +2,10 @@ import certifi
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
+import logging
+
+# 로거 설정
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -14,6 +18,6 @@ db = client[DB_NAME]
 
 try:
     client.admin.command("ping")
-    print("MongoDB 연결 성공")
+    logger.info("MongoDB 연결 성공")
 except Exception as e:
-    print("MongoDB 연결 실패:", e)
+    logger.error("MongoDB 연결 실패:", e)

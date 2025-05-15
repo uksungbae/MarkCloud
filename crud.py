@@ -2,6 +2,10 @@ from models.models import Trademark, AdvancedSearchParams
 from db.base import db
 from bson.objectid import ObjectId
 from typing import Optional, List, Dict, Any
+import logging
+
+# 로거 설정
+logger = logging.getLogger(__name__)
 
 async def get_product(product_id: str) -> Optional[Trademark]:
     """
@@ -144,7 +148,7 @@ async def search_similar_trademarks(params: AdvancedSearchParams) -> List[Dict]:
         return filtered_results
     
     except Exception as e:
-        # Atlas Search 오류 발생 시 에러 메시지만 출력
-        print(f"Atlas Search error: {str(e)}")
+        # Atlas Search 오류 발생 시 에러 메시지 로깅
+        logger.error(f"Atlas Search error: {str(e)}")
         # 빈 결과 반환
         return []
