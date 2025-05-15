@@ -69,7 +69,7 @@ async def get_trademarks(
             query["viennaCodeList"] = {"$in": [filters["viennaCode"]]}
     
     cursor = db.trademark_sample.find(query)
-    results = await cursor.to_list(length=10)
+    results = await cursor.to_list(length=None)
     return results
 
 

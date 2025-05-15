@@ -14,6 +14,19 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/products", tags=["products"])
 
 
+@router.get("/filter", response_model=List[Trademark])
+async def search_trademarks(
+    search_params: TrademarkSearchParams = Depends()
+):
+    """
+    상표 데이터 검색 API (필터링)
+
+    :상표 필터링을 위한 API
+    
+    parameter: 필드 전체 
+    """
+    results = await get_trademarks(filters=search_params.model_dump())
+    return results
 
 
 @router.get("/{product_id}", response_model=Trademark)
@@ -32,21 +45,6 @@ async def get_product_by_id(
         raise HTTPException(status_code=404, detail="Product not found")
     return product
 
-
-
-@router.get("/filter", response_model=List[Trademark])
-async def search_trademarks(
-    search_params: TrademarkSearchParams = Depends()
-):
-    """
-    상표 데이터 검색 API (필터링)
-
-    :상표 필터링을 위한 API
-    
-    parameter: 필드 전체 
-    """
-    results = await get_trademarks(filters=search_params.model_dump())
-    return results
 
 @router.get("/status/counts", response_model=Dict[str, int])
 async def get_status_counts():
