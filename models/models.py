@@ -43,3 +43,11 @@ class TrademarkSearchParams(BaseModel):
     mainCode: Optional[str] = None
     subCode: Optional[str] = None
     viennaCode: Optional[str] = None
+
+class AdvancedSearchParams(BaseModel):
+    """유사 키워드 검색 파라미터"""
+    searchTerm: str
+    fields: List[str] = ["productName", "productNameEng"]
+    fuzzySearch: bool = True
+    synonym: bool = True
+    minScore: float = 0.5
