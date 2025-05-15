@@ -32,8 +32,8 @@ uvicorn main:app --reload
 
 ### API 엔드포인트
 
-- **상표 상세 조회**: `/products/{product_id}` (GET)
 - **상표 필터링 검색**: `/products/filter` (GET)
+- **상표 상세 조회**: `/products/{product_id}` (GET)
 - **유사 키워드 검색**: `/products/search/similar` (GET)
 - **상표 상태별 카운트**: `/products/status/counts` (GET)
 
